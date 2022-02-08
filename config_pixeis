@@ -1,0 +1,62 @@
+import pyautogui
+from time import sleep
+import sys
+import json
+
+
+print("=========================== ATENÇÃO =========================================")
+print("Segunda etapa de configuração do bot para localizar os pixeis automaticamente")
+print("")
+print("Deixe a tela do bombcrypto aberta na parte que mostra a quantidade de bcoins")
+print("")
+print("Preparando para capturar em 5 segundos , não mude nada.")
+print("=============================================================================")
+
+sleep(5)
+pyautogui.click("bau_image_dir/bau.png", duration=1)
+sleep(2)
+locate = pyautogui.locateOnScreen('bau_image_dir/foto.png')
+
+saida_pixeis_separados_bau = []
+
+try:
+    for pixeis in locate:
+        pixeis_separados = []
+        saida_pixeis_separados_bau.append(pixeis)
+
+    dicionario = {
+        'left': f'{saida_pixeis_separados_bau[0]}',
+        'top': f'{saida_pixeis_separados_bau[1]}',
+        'width': f'{saida_pixeis_separados_bau[2]}',
+        'height': f'{saida_pixeis_separados_bau[3]}'
+    }
+
+except TypeError or IndexError or ValueError as error:
+
+    dicionario = None
+
+    print("[-] Erro ao localizar pixeis")
+
+# Escrevendo arquivos
+print("Localizei os valores , inserindo registros , aguarde.\n")
+
+dados = json.dumps(dicionario)
+
+dado = json.loads(dados)
+
+sleep(2)
+# Abre arquivo json e coloca os valores nele
+
+with open('database/dados.json', 'w', encoding='utf-8') as json_:
+
+    # Limpa o json para não bugar o bot
+
+    json_.truncate(0)
+
+    json.dump(dicionario, json_)
+
+print('Configuração finalizada!')
+
+sleep(2)
+sys.exit(1)
+
