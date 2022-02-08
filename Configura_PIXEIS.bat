@@ -1,0 +1,1 @@
+python3 localizador_de_pixeis.py
